@@ -5,11 +5,11 @@
 
 class RotaryPhoneDialDecoder {
   public:
-    RotaryPhoneDialDecoder(uint8_t _basePin, uint8_t _aPin, uint8_t _bPin);
+    RotaryPhoneDialDecoder(uint8_t _aPin, uint8_t _bPin);
     void setup();
     uint8_t waitForDigit();
   private:
-    uint8_t basePin, aPin, bPin;
+    uint8_t aPin, bPin;
 };
 
 #endif

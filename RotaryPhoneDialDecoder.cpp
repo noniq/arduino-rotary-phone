@@ -1,17 +1,14 @@
 #include <Arduino.h>
 #include "RotaryPhoneDialDecoder.h"
 
-RotaryPhoneDialDecoder::RotaryPhoneDialDecoder(uint8_t _basePin, uint8_t _aPin, uint8_t _bPin) {
-  basePin = _basePin;
+RotaryPhoneDialDecoder::RotaryPhoneDialDecoder(uint8_t _aPin, uint8_t _bPin) {
   aPin = _aPin;
   bPin = _bPin;
 }
 
 void RotaryPhoneDialDecoder::setup() {
-  pinMode(basePin, OUTPUT);
   pinMode(aPin, INPUT_PULLUP);
   pinMode(bPin, INPUT_PULLUP);
-  digitalWrite(basePin, 0);
 }
 
 uint8_t RotaryPhoneDialDecoder::waitForDigit() {
