@@ -8,6 +8,7 @@
 static const uint8_t DEBUG_LED_PIN = 13;
 static const uint8_t ROTARY_PHONE_A_PIN = A0;
 static const uint8_t ROTARY_PHONE_B_PIN = A1;
+static const uint8_t SFX_PWR = 2;
 static const uint8_t SFX_ACT = 7;
 
 RotaryPhoneDialDecoder rotaryPhoneDialDecoder(ROTARY_PHONE_A_PIN, ROTARY_PHONE_B_PIN);
@@ -23,6 +24,8 @@ void debugBlink(uint16_t millis) {
 }
 
 void setup() {
+  digitalWrite(SFX_PWR, HIGH); // Make sure Sound Board is powered off initially (pin is active low)
+  pinMode(SFX_PWR, OUTPUT);
   pinMode(SFX_ACT, INPUT);
 #ifdef DEBUG
   pinMode(DEBUG_LED_PIN, OUTPUT);
@@ -30,6 +33,7 @@ void setup() {
 #endif
   Serial.begin(9600);
   delay(100);
+  digitalWrite(SFX_PWR, LOW);
   rotaryPhoneDialDecoder.setup();
   sfx.readLine(); // Wait for Sound Board to boot up (or time out after 500ms ...)
   debugBlink(50);
@@ -59,6 +63,8 @@ void loop() {
   while(digitalRead(SFX_ACT) == LOW) {
     delay(10);
   }
+  digitalWrite(SFX_PWR, HIGH);
+  pinMode(SFX_PWR, INPUT);
   pinMode(DEBUG_LED_PIN, INPUT);
   set_sleep_mode(SLEEP_MODE_PWR_DOWN);
   sleep_mode();
