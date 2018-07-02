@@ -23,14 +23,15 @@ void debugBlink(uint16_t millis) {
 }
 
 void setup() {
-  rotaryPhoneDialDecoder.setup();
   pinMode(SFX_ACT, INPUT);
 #ifdef DEBUG
   pinMode(DEBUG_LED_PIN, OUTPUT);
   digitalWrite(DEBUG_LED_PIN, HIGH);
 #endif
   Serial.begin(9600);
-  delay(250);
+  delay(100);
+  rotaryPhoneDialDecoder.setup();
+  sfx.readLine(); // Wait for Sound Board to boot up (or time out after 500ms ...)
   debugBlink(50);
 }
 
