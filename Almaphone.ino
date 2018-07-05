@@ -51,6 +51,17 @@ void flushInput() {
   }
 }
 
+void powerDown() {
+  digitalWrite(SFX_PWR, HIGH);
+  pinMode(SFX_PWR, INPUT);
+  pinMode(DEBUG_LED_PIN, INPUT);
+  set_sleep_mode(SLEEP_MODE_PWR_DOWN);
+  sleep_mode();
+  while(1) { // never reached (if sleep mode works correctly)
+    debugBlink(200);
+  }
+}
+
 void loop() {
   char filename[] = "F       OGG";
   flushInput();
@@ -63,12 +74,5 @@ void loop() {
   while(digitalRead(SFX_ACT) == LOW) {
     delay(10);
   }
-  digitalWrite(SFX_PWR, HIGH);
-  pinMode(SFX_PWR, INPUT);
-  pinMode(DEBUG_LED_PIN, INPUT);
-  set_sleep_mode(SLEEP_MODE_PWR_DOWN);
-  sleep_mode();
-  while(1) { // never reached (if sleep mode works correctly)
-    debugBlink(200);
-  }
+  powerDown();
 }
