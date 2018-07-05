@@ -32,7 +32,7 @@ void setup() {
   digitalWrite(DEBUG_LED_PIN, HIGH);
 #endif
   Serial.begin(9600);
-  delay(100);
+  delay(10);
   digitalWrite(SFX_PWR, LOW);
   rotaryPhoneDialDecoder.setup();
   sfx.readLine(); // Wait for Sound Board to boot up (or time out after 500ms ...)
