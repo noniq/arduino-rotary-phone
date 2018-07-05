@@ -6,10 +6,10 @@
 #define DEBUG
 
 static const uint8_t DEBUG_LED_PIN = 13;
-static const uint8_t ROTARY_PHONE_A_PIN = A0;
-static const uint8_t ROTARY_PHONE_B_PIN = A1;
+static const uint8_t ROTARY_PHONE_A_PIN = 9;
+static const uint8_t ROTARY_PHONE_B_PIN = 10;
 static const uint8_t SFX_PWR = 2;
-static const uint8_t SFX_ACT = 7;
+static const uint8_t SFX_ACT = 8;
 
 RotaryPhoneDialDecoder rotaryPhoneDialDecoder(ROTARY_PHONE_A_PIN, ROTARY_PHONE_B_PIN);
 Adafruit_Soundboard sfx = Adafruit_Soundboard(&Serial, NULL, 9); // Last argument is reset pin, which we don't use
