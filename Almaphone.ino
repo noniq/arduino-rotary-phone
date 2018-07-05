@@ -70,13 +70,20 @@ void loop() {
   char filename[] = "F       OGG";
   flushInput();
   sfx.playTrack(filename);
-  uint8_t digit = rotaryPhoneDialDecoder.waitForDigit();
-  sfx.stop();
-  filename[0] = digit + '0';
-  sfx.playTrack(filename);
-  delay(500);
+  delay(200); // give soundboard some time to actually start playing the file
+
   while (isAudioPlaying()) {
+    if (rotaryPhoneDialDecoder.isDialling()) {
+      sfx.stop();
+      uint8_t digit = rotaryPhoneDialDecoder.readDigit();
+      filename[0] = digit + '0';
+      sfx.playTrack(filename);
+      delay(200);
+      break;
+    }
     delay(10);
   }
+
+  while (isAudioPlaying()) delay(10);
   powerDown();
 }

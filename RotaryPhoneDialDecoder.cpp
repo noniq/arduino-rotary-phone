@@ -11,12 +11,15 @@ void RotaryPhoneDialDecoder::setup() {
   pinMode(bPin, INPUT_PULLUP);
 }
 
-uint8_t RotaryPhoneDialDecoder::waitForDigit() {
-  while (digitalRead(aPin) == 1) delay(100); // Wait until dialing starts (aPin is low during the complete dial process)
-  uint8_t digit = 0, lastB = 0, curB = 0;
-  while (digitalRead(aPin) == 0) {
+bool RotaryPhoneDialDecoder::isDialling() {
+  return digitalRead(aPin) == LOW; // aPin is low as soon as dialling has started (and during the complete dial process)
+}
+
+uint8_t RotaryPhoneDialDecoder::readDigit() {
+  uint8_t digit = 0, lastB = LOW, curB = LOW;
+  while (digitalRead(aPin) == LOW) {
     curB = digitalRead(bPin);
-    if (lastB == 0 && curB == 1) digit++; // Count how often bPin toggles its state
+    if (lastB == LOW && curB == HIGH) digit++; // count how often bPin toggles its state
     lastB = curB;
     delay(10);
   }
