@@ -62,6 +62,10 @@ void powerDown() {
   }
 }
 
+bool isAudioPlaying() {
+  return digitalRead(SFX_ACT) == LOW;
+}
+
 void loop() {
   char filename[] = "F       OGG";
   flushInput();
@@ -71,7 +75,7 @@ void loop() {
   filename[0] = digit + '0';
   sfx.playTrack(filename);
   delay(500);
-  while(digitalRead(SFX_ACT) == LOW) {
+  while (isAudioPlaying()) {
     delay(10);
   }
   powerDown();
