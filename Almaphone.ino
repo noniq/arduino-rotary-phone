@@ -86,5 +86,11 @@ void loop() {
   }
 
   while (isAudioPlaying()) delay(10);
+
+  filename[0] = 'B';
+  sfx.playTrack(filename);
+  delay(200); // give soundboard some time to actually start playing the file
+  while (isAudioPlaying()) delay(10);
+
   powerDown();
 }
