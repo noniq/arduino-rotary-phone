@@ -3,8 +3,6 @@
 #include "Adafruit_Soundboard.h"
 #include "RotaryPhoneDialDecoder.h"
 
-#define DEBUG
-
 static const uint8_t DEBUG_LED_PIN = 13;
 static const uint8_t ROTARY_PHONE_A_PIN = 9;
 static const uint8_t ROTARY_PHONE_B_PIN = 10;
