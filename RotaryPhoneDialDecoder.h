@@ -8,7 +8,7 @@ class RotaryPhoneDialDecoder {
     RotaryPhoneDialDecoder(uint8_t _aPin, uint8_t _bPin);
     void setup();
     bool isDialling();
-    uint8_t readDigit();
+    int8_t readDigit();
   private:
     uint8_t aPin, bPin;
 };

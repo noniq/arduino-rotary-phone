@@ -75,6 +75,7 @@ void loop() {
     if (rotaryPhoneDialDecoder.isDialling()) {
       sfx.stop();
       uint8_t digit = rotaryPhoneDialDecoder.readDigit();
+      if (digit == -1) break;
       filename[0] = digit + '0';
       sfx.playTrack(filename);
       delay(200);

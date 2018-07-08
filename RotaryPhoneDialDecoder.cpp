@@ -15,7 +15,8 @@ bool RotaryPhoneDialDecoder::isDialling() {
   return digitalRead(aPin) == LOW; // aPin is low as soon as dialling has started (and during the complete dial process)
 }
 
-uint8_t RotaryPhoneDialDecoder::readDigit() {
+// Return currenty dialled digit (0-9), or -1 if the digit was not recognized correctly.
+int8_t RotaryPhoneDialDecoder::readDigit() {
   uint8_t digit = 0, lastB = LOW, curB = LOW;
   while (digitalRead(aPin) == LOW) {
     curB = digitalRead(bPin);
@@ -23,5 +24,6 @@ uint8_t RotaryPhoneDialDecoder::readDigit() {
     lastB = curB;
     delay(10);
   }
-  return digit >= 10 ? 0 : digit;
+  if (digit < 1 || digit > 10) return -1;
+  return digit == 10 ? 0 : digit;
 }
