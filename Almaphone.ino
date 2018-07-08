@@ -69,6 +69,7 @@ bool isAudioPlaying() {
 void loop() {
   char filename[] = "F       OGG";
   flushInput();
+  while (sfx.volDown() > 150);
   sfx.playTrack(filename);
   delay(200); // give soundboard some time to actually start playing the file
 
