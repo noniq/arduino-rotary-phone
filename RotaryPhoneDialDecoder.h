@@ -5,12 +5,12 @@
 
 class RotaryPhoneDialDecoder {
   public:
-    RotaryPhoneDialDecoder(uint8_t _aPin, uint8_t _bPin);
+    RotaryPhoneDialDecoder(uint8_t _diallingSignalPin, uint8_t _digitSignalPin);
     void setup();
     bool isDialling();
     int8_t readDigit();
   private:
-    uint8_t aPin, bPin;
+    uint8_t diallingSignalPin, digitSignalPin;
 };
 
 #endif
