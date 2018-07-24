@@ -15,12 +15,19 @@ bool RotaryPhoneDialDecoder::isDialling() {
   return digitalRead(diallingSignalPin) == LOW; // diallingSignalPin is low as soon as dialling has started (and during the complete dial process)
 }
 
-// Return currenty dialled digit (0-9), or -1 if the digit was not recognized correctly.
+// Return currently dialled digit (0-9), or -1 if the digit was not recognized
+// correctly (0 or more than 10 pulses detected).
+//
+// Note that this method assumes that dialling has already started
+// (diallingSignalPin is low).
 int8_t RotaryPhoneDialDecoder::readDigit() {
   uint8_t digit = 0, last = LOW, current = LOW;
   while (digitalRead(diallingSignalPin) == LOW) {
     current = digitalRead(digitSignalPin);
-    if (last == LOW && current == HIGH) digit++; // count how often digitSignalPin toggles its state
+
+    // count how often digitSignalPin toggles its state
+    if (last == LOW && current == HIGH) digit++;
+
     last = current;
     delay(10);
   }
