@@ -16,16 +16,17 @@ bool RotaryPhoneDialDecoder::isDialling() {
 }
 
 // Return currently dialled digit (0-9), or -1 if the digit was not recognized
-// correctly (0 or more than 10 pulses detected).
+// correctly (0 or more than 10 pulses detected). Dialling must already have
+// started (`diallingSignalPin` active).
 //
-// Note that this method assumes that dialling has already started
-// (diallingSignalPin is low).
+// `diallingSignalPin` is assumed to be active-low; for `digitSignalPin` it
+// doesn’t matter (edge detection works with both active-low and active-high).
 int8_t RotaryPhoneDialDecoder::readDigit() {
   uint8_t digit = 0, last = LOW, current = LOW;
   while (digitalRead(diallingSignalPin) == LOW) {
     current = digitalRead(digitSignalPin);
 
-    // count how often digitSignalPin toggles its state
+    // Count how often digitSignalPin toggles its state (edge detection).
     if (last == LOW && current == HIGH) digit++;
 
     last = current;
