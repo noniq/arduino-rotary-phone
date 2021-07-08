@@ -1,4 +1,4 @@
-ARDMK_DIR     = /usr/local/opt/arduino-mk
+ARDMK_DIR     = /opt/homebrew/opt/arduino-mk
 
 BOARD_TAG     = uno
 #ARDUINO_QUIET = 1
@@ -8,4 +8,3 @@ F_CPU = 8000000L
 ISP_PROG = usbtiny
 
 include ${ARDMK_DIR}/Arduino.mk
-
