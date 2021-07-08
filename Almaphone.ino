@@ -2,6 +2,7 @@
 
 #include "Adafruit_Soundboard.h"
 #include "RotaryPhoneDialDecoder.h"
+#include "Quiz.h"
 
 static const uint8_t DEBUG_LED_PIN = 13;
 static const uint8_t ROTARY_PHONE_A_PIN = 9;
@@ -9,8 +10,11 @@ static const uint8_t ROTARY_PHONE_B_PIN = 10;
 static const uint8_t SFX_PWR = 2;
 static const uint8_t SFX_ACT = 8;
 
+void playAudioTrackBlocking(char *filename);
+
 RotaryPhoneDialDecoder rotaryPhoneDialDecoder(ROTARY_PHONE_A_PIN, ROTARY_PHONE_B_PIN);
 Adafruit_Soundboard sfx = Adafruit_Soundboard(&Serial, NULL, 9); // Last argument is reset pin, which we don't use
+Quiz quiz = Quiz(&rotaryPhoneDialDecoder, &sfx, playAudioTrackBlocking);
 
 void debugBlink(uint16_t millis) {
 #ifdef DEBUG
@@ -65,10 +69,9 @@ bool isAudioPlaying() {
 }
 
 void loop() {
-  char filename[] = "F       OGG";
   flushInput();
-  while (sfx.volDown() > 150);
-  sfx.playTrack(filename);
+  while (sfx.volDown() > 200);
+  sfx.playTrack("F       OGG");
   delay(200); // give soundboard some time to actually start playing the file
 
   while (isAudioPlaying()) {
@@ -76,9 +79,12 @@ void loop() {
       sfx.stop();
       uint8_t digit = rotaryPhoneDialDecoder.readDigit();
       if (digit == -1) break;
-      filename[0] = digit + '0';
-      sfx.playTrack(filename);
-      delay(200);
+      if (digit == 7) {
+        quiz.start();
+      } else {
+        sfx.playTrack("KEIN-AN OGG");
+        delay(200);
+      }
       break;
     }
     delay(10);
@@ -86,10 +92,15 @@ void loop() {
 
   while (isAudioPlaying()) delay(10);
 
-  filename[0] = 'B';
-  sfx.playTrack(filename);
+  sfx.playTrack("B       OGG");
   delay(200); // give soundboard some time to actually start playing the file
   while (isAudioPlaying()) delay(10);
 
   powerDown();
+}
+
+void playAudioTrackBlocking(char *filename) {
+  sfx.playTrack(filename);
+  delay(200);
+  while (isAudioPlaying()) delay(10);
 }
