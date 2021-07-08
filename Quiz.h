@@ -20,9 +20,12 @@ class Quiz {
       3, 1, 2,
       3, 2, 1
     };
+    uint8_t chosenQuestionIds[5] = {0, 0, 0, 0, 0};
 
-    void (*playTrack)(char *);
-    bool randomQuestion();
+    void (*playTrack)(char *filename);
+    uint8_t chooseRandomQuestion();
+    bool questionHasAlreadyBeenChosen(uint8_t questionId);
+    bool doQuestion(uint8_t questionId);
     int8_t readDigit1to3();
 };
 

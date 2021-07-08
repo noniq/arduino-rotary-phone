@@ -12,13 +12,16 @@ void Quiz::start() {
   playTrack("Q-START OGG");
   delay(200);
 
-  uint8_t correctAnswers = 0;
+  uint8_t correctAnswers = 0, questionId;
   char filename[] = "Q-FRAGE?OGG";
   for (uint8_t i = 1; i < 6; i++) {
     filename[7] = i + '0';
     playTrack(filename);
     delay(1000);
-    if (randomQuestion()) {
+
+    questionId = chooseRandomQuestion();
+    chosenQuestionIds[i  - 1] = questionId;
+    if (doQuestion(questionId)) {
       correctAnswers++;
     }
     delay(1500);
@@ -30,11 +33,29 @@ void Quiz::start() {
   delay(1500);
 }
 
-bool Quiz::randomQuestion() {
+uint8_t Quiz::chooseRandomQuestion() {
+  uint8_t category, question, questionId;
+  do {
+    category = random(1, 6);
+    question = random(1, 10);
+    questionId = category * 100 + question;
+  } while (questionHasAlreadyBeenChosen(questionId));
+  return questionId;
+}
+
+bool Quiz::questionHasAlreadyBeenChosen(uint8_t questionId) {
+  for (uint8_t i = 0; i < 5; i++) {
+    if (chosenQuestionIds[i] == questionId) return true;
+  }
+  return false;
+}
+
+bool Quiz::doQuestion(uint8_t questionId) {
+  uint8_t category = questionId / 100, question = questionId % 100;
+
   char filename1[] = "Q?-?--0?OGG";
   char filename2[] = "Q-ANTW? OGG";
-  filename1[1] = (uint8_t)random(1, 6) + '0'; // Category number
-  uint8_t question = random(1, 10);
+  filename1[1] = category + '0'; // Category number
   filename1[3] = question < 10 ? question + '0' : 'A'; // Question number
   filename1[7] = '1';
   playTrack(filename1); // Play question
