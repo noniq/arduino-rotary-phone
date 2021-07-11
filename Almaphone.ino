@@ -70,7 +70,7 @@ bool isAudioPlaying() {
 
 void loop() {
   flushInput();
-  while (sfx.volDown() > 200);
+  while (sfx.volUp() < 200);
   sfx.playTrack("F       OGG");
   delay(200); // give soundboard some time to actually start playing the file
 
