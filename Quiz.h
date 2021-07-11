@@ -26,7 +26,7 @@ class Quiz {
     uint8_t chooseRandomQuestion();
     bool questionHasAlreadyBeenChosen(uint8_t questionId);
     bool doQuestion(uint8_t questionId);
-    int8_t readDigit1to3();
+    int8_t readDigit();
 };
 
 #endif

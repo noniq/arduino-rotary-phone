@@ -57,26 +57,26 @@ bool Quiz::doQuestion(uint8_t questionId) {
   char filename2[] = "Q-ANTW? OGG";
   filename1[1] = category + '0'; // Category number
   filename1[3] = question < 10 ? question + '0' : 'A'; // Question number
-  filename1[7] = '1';
-  playTrack(filename1, true); // Play question
-  delay(750);
-  uint8_t *answerSequence = ANSWER_SEQUENCES[random(0, 5)];
   int8_t digit = -1;
-  for (int i = 0; i < 3 && digit == -1; i++) {
-    filename2[6] = i + '1';
-    playTrack(filename2, false); // Play answer number
-    delay(350);
-    filename1[7] = answerSequence[i] + '1';
-    digit = playTrack(filename1, true); // Play answer
-    delay(1000);
-  }
-  if (digit < 1 || digit > 3) {
-    playTrack("Q-ANTW1 OGG", false);
-    delay(250);
-    playTrack("Q-ANTW2 OGG", false);
-    delay(250);
-    playTrack("Q-ANTW3 OGG", false);
-    digit = readDigit1to3();
+  uint8_t *answerSequence = ANSWER_SEQUENCES[random(0, 5)];
+
+  while (digit < 1 || digit > 3) {
+    filename1[7] = '1';
+    playTrack(filename1, true); // Play question
+    delay(750);
+    digit == -1;
+    for (int i = 0; i < 3; i++) {
+      filename2[6] = i + '1';
+      playTrack(filename2, false); // Play answer number
+      delay(350);
+      filename1[7] = answerSequence[i] + '1';
+      digit = playTrack(filename1, true); // Play answer
+      if (digit != -1) break;
+      delay(1000);
+    }
+    if (digit == -1) {
+      digit = readDigit();
+    }
   }
   filename1[7] = answerSequence[digit - 1] + '1';
   playTrack(filename1, false); // Play chosen answer
@@ -94,11 +94,7 @@ bool Quiz::doQuestion(uint8_t questionId) {
   return isCorrect;
 }
 
-int8_t Quiz::readDigit1to3() {
-  int8_t digit = -1;
-  while(digit < 1 || digit > 3) {
-    while (!dialDecoder->isDialling()) { delay(10); }
-    digit = dialDecoder->readDigit();
-  }
-  return digit;
+int8_t Quiz::readDigit() {
+  while (!dialDecoder->isDialling()) { delay(10); }
+  return dialDecoder->readDigit();;
 }
