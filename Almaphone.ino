@@ -79,7 +79,7 @@ void loop() {
       sfx.stop();
       uint8_t digit = rotaryPhoneDialDecoder.readDigit();
       if (digit == -1) break;
-      if (digit == 7) {
+      if (digit == 1) {
         quiz.start();
       } else {
         sfx.playTrack("KEIN-AN OGG");
