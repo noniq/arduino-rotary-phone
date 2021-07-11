@@ -36,9 +36,9 @@ void Quiz::start() {
 uint8_t Quiz::chooseRandomQuestion() {
   uint8_t category, question, questionId;
   do {
-    category = random(1, 6);
-    question = random(1, 10);
-    questionId = category * 100 + question;
+    category = random(1, 7);
+    question = random(1, 11);
+    questionId = (category << 4) + question;
   } while (questionHasAlreadyBeenChosen(questionId));
   return questionId;
 }
@@ -51,7 +51,7 @@ bool Quiz::questionHasAlreadyBeenChosen(uint8_t questionId) {
 }
 
 bool Quiz::doQuestion(uint8_t questionId) {
-  uint8_t category = questionId / 100, question = questionId % 100;
+  uint8_t category = questionId >> 4, question = questionId & 0b00001111;
 
   char filename1[] = "Q?-?--0?OGG";
   char filename2[] = "Q-ANTW? OGG";
