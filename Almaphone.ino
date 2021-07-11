@@ -10,7 +10,7 @@ static const uint8_t ROTARY_PHONE_B_PIN = 10;
 static const uint8_t SFX_PWR = 2;
 static const uint8_t SFX_ACT = 8;
 
-void playAudioTrackBlocking(char *filename);
+uint8_t playAudioTrackBlocking(char *filename, bool);
 
 RotaryPhoneDialDecoder rotaryPhoneDialDecoder(ROTARY_PHONE_A_PIN, ROTARY_PHONE_B_PIN);
 Adafruit_Soundboard sfx = Adafruit_Soundboard(&Serial, NULL, 9); // Last argument is reset pin, which we don't use
@@ -99,8 +99,17 @@ void loop() {
   powerDown();
 }
 
-void playAudioTrackBlocking(char *filename) {
+uint8_t playAudioTrackBlocking(char *filename, bool interruptible) {
   sfx.playTrack(filename);
   delay(200);
-  while (isAudioPlaying()) delay(10);
+  while (isAudioPlaying()) {
+    if (interruptible && rotaryPhoneDialDecoder.isDialling()) {
+      sfx.stop();
+      int8_t digit = rotaryPhoneDialDecoder.readDigit();
+      delay(200);
+      return digit;
+    }
+    delay(10);
+  }
+  return -1;
 }

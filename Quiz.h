@@ -6,7 +6,7 @@
 
 class Quiz {
   public:
-    Quiz(RotaryPhoneDialDecoder *_dialDecoder, Adafruit_Soundboard *_sfx, void (*_playTrack)(char *));
+    Quiz(RotaryPhoneDialDecoder *_dialDecoder, Adafruit_Soundboard *_sfx, uint8_t (*_playTrack)(char *, bool));
     void start();
 
   private:
@@ -22,7 +22,7 @@ class Quiz {
     };
     uint8_t chosenQuestionIds[5] = {0, 0, 0, 0, 0};
 
-    void (*playTrack)(char *filename);
+    uint8_t (*playTrack)(char *filename, bool interruptible);
     uint8_t chooseRandomQuestion();
     bool questionHasAlreadyBeenChosen(uint8_t questionId);
     bool doQuestion(uint8_t questionId);
